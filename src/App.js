@@ -147,27 +147,27 @@ function App() {
           />
         ))}
       </div>
-      <input
-        id="standard-read-only-input"
-        type="text"
-        label="Type your sentences here"
-        placeholder="Enter here"
-        onChange={(e) => setText(e.target.value)}
-        value={testText}
-        rows={4}
-        variant="outlined"
-        className="bg-gray-300 focus:bg-blue-300 md:w-3/6 text-white placeholder-white focus:placeholder-white px-2"
-      />
-      <br />
-      <br />
-      {testText !== "" ?
-        <button
-          style={{ width: "20vh", height: "5vh" }}
+      <div className="flex flex-row w-3/6 mx-auto">
+        <input
+          id="standard-read-only-input"
+          type="text"
+          label="Type your sentences here"
+          placeholder="Enter here"
+          onChange={(e) => setText(e.target.value)}
+          value={testText}
+          rows={4}
           variant="outlined"
-          onClick={() => getSentimentScore(testText)}
-          className="bg-blue-400 text-white hover:bg-blue-600 font-bold"
-        >Calculate</button>
-        : <></>}
+          className="bg-gray-300 focus:bg-blue-300 md:w-5/6 text-white placeholder-white focus:placeholder-white px-2"
+        />
+        {testText !== "" ?
+          <button
+            style={{ width: "20vh", height: "5vh" }}
+            variant="outlined"
+            onClick={() => getSentimentScore(testText)}
+            className="bg-blue-400 text-white hover:bg-blue-600 font-bold"
+          >Send</button>
+          : <></>}
+        </div>
       {testScore && printScore(testScore)}
     </div>
   );
