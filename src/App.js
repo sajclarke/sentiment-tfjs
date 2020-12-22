@@ -124,6 +124,15 @@ function App() {
     });
   }, [])
 
+  const printScore = (score) => {
+    const txtColor = score > 0.55 ? "text-black" : "text-red-400";
+    score = String(score).slice(0, 6);
+
+    return (
+      <h2 className={txtColor}>{score}</h2>
+    )
+  }
+
   return (
     <div className="App">
       <div className="md:w-3/6 h-80 overflow-auto md:mx-auto mx-2 mt-2 mb-8 p-2 bg-gray-200 flex flex-col">
@@ -157,9 +166,7 @@ function App() {
           className="bg-blue-400 text-white hover:bg-blue-600 font-bold"
         >Calculate</button>
         : <></>}
-      {testScore && (
-        <h2>{testScore}</h2>
-      )}
+      {testScore && printScore(testScore)}
     </div>
   );
 }
