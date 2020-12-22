@@ -110,6 +110,7 @@ function App() {
       txt: text,
       score: score,
       date: getDate(),
+      user: true,
     }])
 
     return score;
@@ -135,13 +136,14 @@ function App() {
 
   return (
     <div className="App">
-      <div className="md:w-3/6 h-80 overflow-auto md:mx-auto mx-2 mt-2 mb-8 p-2 bg-gray-200 flex flex-col">
+      <div className="md:w-3/6 h-80 overflow-auto md:mx-auto mx-2 mt-2 p-2 bg-gray-200">
         { messages?.map((msg, index) => (
           <Message
             key={index}
             txt={msg.txt}
             score={msg.score}
             date={msg.date}
+            userMsg={msg.user}
           />
         ))}
       </div>
@@ -154,7 +156,7 @@ function App() {
         value={testText}
         rows={4}
         variant="outlined"
-        className="bg-gray-300 focus:bg-blue-300 text-white placeholder-white focus:placeholder-white px-2"
+        className="bg-gray-300 focus:bg-blue-300 md:w-3/6 text-white placeholder-white focus:placeholder-white px-2"
       />
       <br />
       <br />
