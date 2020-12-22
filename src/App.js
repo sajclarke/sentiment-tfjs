@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css';
 import './assets/output.css'
+import Message from './components/message'
 
 import * as tf from '@tensorflow/tfjs';
 
@@ -19,6 +20,8 @@ function App() {
 
   const [testText, setText] = useState("");
   const [testScore, setScore] = useState("");
+
+  const [messages, setMessages] = useState([]);
 
   const OOV_INDEX = 2;
   const PAD_INDEX = 0;
@@ -69,6 +72,13 @@ function App() {
     }
   }
 
+  const getDate = () => {
+    let today = new Date();
+    let date = today.getFullYear() + '/' + (today.getMonth()+1) + '/' + today.getDate();
+    let time = today.getHours() + ":" + String(today.getMinutes()).padStart(2, '0') // + ":" + today.getSeconds();
+    return date + " " + time
+  }
+
   const getSentimentScore = (text) => {
     console.log(text)
     const inputText = text.trim().toLowerCase().replace(/(\.|\,|\!)/g, '').split(' ');
@@ -95,6 +105,13 @@ function App() {
     const score = predictOut.dataSync()[0];
     predictOut.dispose();
     setScore(score)
+
+    setMessages([...messages, {
+      txt: text,
+      score: score,
+      date: getDate(),
+    }])
+
     return score;
   }
 
@@ -109,19 +126,36 @@ function App() {
 
   return (
     <div className="App">
+      <div className="md:w-3/6 max-h-3/6 md:mx-auto mx-2 mt-2 mb-8 p-2 bg-gray-200 flex flex-col">
+        { messages?.map((msg, index) => (
+          <Message
+            key={index}
+            txt={msg.txt}
+            score={msg.score}
+            date={msg.date}
+          />
+        ))}
+      </div>
       <input
         id="standard-read-only-input"
         type="text"
         label="Type your sentences here"
+        placeholder="Enter here"
         onChange={(e) => setText(e.target.value)}
         value={testText}
         rows={4}
         variant="outlined"
+        className="bg-gray-300 focus:bg-blue-300 text-white placeholder-white focus:placeholder-white px-2"
       />
       <br />
       <br />
       {testText !== "" ?
-        <button style={{ width: "20vh", height: "5vh" }} variant="outlined" onClick={() => getSentimentScore(testText)}>Calculate</button>
+        <button
+          style={{ width: "20vh", height: "5vh" }}
+          variant="outlined"
+          onClick={() => getSentimentScore(testText)}
+          className="bg-blue-400 text-white hover:bg-blue-600 font-bold"
+        >Calculate</button>
         : <></>}
       {testScore && (
         <h2>{testScore}</h2>
