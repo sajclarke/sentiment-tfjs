@@ -126,7 +126,7 @@ function App() {
 
   return (
     <div className="App">
-      <div className="md:w-3/6 max-h-3/6 md:mx-auto mx-2 mt-2 mb-8 p-2 bg-gray-200 flex flex-col">
+      <div className="md:w-3/6 h-80 overflow-auto md:mx-auto mx-2 mt-2 mb-8 p-2 bg-gray-200 flex flex-col">
         { messages?.map((msg, index) => (
           <Message
             key={index}
