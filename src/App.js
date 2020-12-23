@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import logo from './logo.svg';
-import './App.css';
+import './assets/output.css'
+import Message from './components/message'
 
 import * as tf from '@tensorflow/tfjs';
 
@@ -19,6 +19,8 @@ function App() {
 
   const [testText, setText] = useState("");
   const [testScore, setScore] = useState("");
+
+  const [messages, setMessages] = useState([]);
 
   const OOV_INDEX = 2;
   const PAD_INDEX = 0;
@@ -69,6 +71,13 @@ function App() {
     }
   }
 
+  const getDate = () => {
+    let today = new Date();
+    let date = today.getFullYear() + '/' + (today.getMonth()+1) + '/' + today.getDate();
+    let time = today.getHours() + ":" + String(today.getMinutes()).padStart(2, '0') // + ":" + today.getSeconds();
+    return date + " " + time
+  }
+
   const getSentimentScore = (text) => {
     console.log(text)
     const inputText = text.trim().toLowerCase().replace(/(\.|\,|\!)/g, '').split(' ');
@@ -95,6 +104,14 @@ function App() {
     const score = predictOut.dataSync()[0];
     predictOut.dispose();
     setScore(score)
+
+    setMessages([...messages, {
+      txt: text,
+      score: score,
+      date: getDate(),
+      user: true,
+    }])
+
     return score;
   }
 
@@ -107,25 +124,47 @@ function App() {
     });
   }, [])
 
+  const printScore = (score) => {
+    const txtColor = score > 0.5 ? "text-black" : "text-red-400";
+    score = String(score).slice(0, 6);
+
+    return (
+      <h2 className={txtColor}>{score}</h2>
+    )
+  }
+
   return (
-    <div className="App">
-      <input
-        id="standard-read-only-input"
-        type="text"
-        label="Type your sentences here"
-        onChange={(e) => setText(e.target.value)}
-        value={testText}
-        rows={4}
-        variant="outlined"
-      />
-      <br />
-      <br />
-      {testText !== "" ?
-        <button style={{ width: "20vh", height: "5vh" }} variant="outlined" onClick={() => getSentimentScore(testText)}>Calculate</button>
-        : <></>}
-      {testScore && (
-        <h2>{testScore}</h2>
-      )}
+    <div className="text-center">
+      <div className="max-w-screen-sm mx-auto h-80 overflow-auto md:mt-2 p-2 bg-gray-200">
+        { messages?.map((msg, index) => (
+          <Message
+            key={index}
+            txt={msg.txt}
+            score={msg.score}
+            date={msg.date}
+            userMsg={msg.user}
+          />
+        ))}
+      </div>
+      <div className="flex flex-row max-w-screen-sm mx-auto">
+        <input
+          id="standard-read-only-input"
+          type="text"
+          label="Type your sentences here"
+          placeholder="Enter here"
+          onChange={(e) => setText(e.target.value)}
+          value={testText}
+          rows={4}
+          className="bg-gray-300 focus:bg-blue-300 w-5/6 text-white placeholder-white focus:placeholder-white px-2"
+        />
+        {testText !== "" ?
+          <button
+            onClick={() => getSentimentScore(testText)}
+            className="bg-blue-400 text-white hover:bg-blue-600 font-bold rounded-sm shadow-sm w-1/6 h-8"
+          >Send</button>
+          : <></>}
+        </div>
+      {testScore && printScore(testScore)}
     </div>
   );
 }
