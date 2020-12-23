@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import './App.css';
 import './assets/output.css'
 import Message from './components/message'
 
@@ -126,7 +125,7 @@ function App() {
   }, [])
 
   const printScore = (score) => {
-    const txtColor = score > 0.55 ? "text-black" : "text-red-400";
+    const txtColor = score > 0.5 ? "text-black" : "text-red-400";
     score = String(score).slice(0, 6);
 
     return (
@@ -135,8 +134,8 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <div className="md:w-3/6 h-80 overflow-auto md:mx-auto mx-2 mt-2 p-2 bg-gray-200">
+    <div className="text-center">
+      <div className="max-w-screen-sm mx-auto h-80 overflow-auto md:mt-2 p-2 bg-gray-200">
         { messages?.map((msg, index) => (
           <Message
             key={index}
@@ -147,7 +146,7 @@ function App() {
           />
         ))}
       </div>
-      <div className="flex flex-row w-3/6 mx-auto">
+      <div className="flex flex-row max-w-screen-sm mx-auto">
         <input
           id="standard-read-only-input"
           type="text"
@@ -157,14 +156,14 @@ function App() {
           value={testText}
           rows={4}
           variant="outlined"
-          className="bg-gray-300 focus:bg-blue-300 md:w-5/6 text-white placeholder-white focus:placeholder-white px-2"
+          className="bg-gray-300 focus:bg-blue-300 w-5/6 text-white placeholder-white focus:placeholder-white px-2"
         />
         {testText !== "" ?
           <button
             style={{ width: "20vh", height: "5vh" }}
             variant="outlined"
             onClick={() => getSentimentScore(testText)}
-            className="bg-blue-400 text-white hover:bg-blue-600 font-bold"
+            className="bg-blue-400 text-white hover:bg-blue-600 font-bold rounded-sm shadow-sm"
           >Send</button>
           : <></>}
         </div>
