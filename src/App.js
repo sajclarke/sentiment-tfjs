@@ -155,15 +155,12 @@ function App() {
           onChange={(e) => setText(e.target.value)}
           value={testText}
           rows={4}
-          variant="outlined"
           className="bg-gray-300 focus:bg-blue-300 w-5/6 text-white placeholder-white focus:placeholder-white px-2"
         />
         {testText !== "" ?
           <button
-            style={{ width: "20vh", height: "5vh" }}
-            variant="outlined"
             onClick={() => getSentimentScore(testText)}
-            className="bg-blue-400 text-white hover:bg-blue-600 font-bold rounded-sm shadow-sm"
+            className="bg-blue-400 text-white hover:bg-blue-600 font-bold rounded-sm shadow-sm w-1/6 h-8"
           >Send</button>
           : <></>}
         </div>
